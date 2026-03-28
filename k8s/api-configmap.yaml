@@ -1,0 +1,16 @@
+# api-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-html
+  namespace: api-app
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+      <head><title>api.ghostengineer.xyz</title></head>
+      <body>
+        <h1>API Service</h1>
+        <p>api.ghostengineer.xyz on Kubernetes</p>
+      </body>
+    </html>
