@@ -12,5 +12,6 @@ data:
       <body>
         <h1>API Service</h1>
         <p>api.ghostengineer.xyz on Kubernetes</p>
+        <p>Welcome to the new World!</p>
       </body>
     </html>
