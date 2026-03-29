@@ -2,12 +2,33 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: api-route
-  namespace: api-app
+  name: http-to-https-redirect
+  namespace: nginx-app
 spec:
   parentRefs:
     - name: nginx-gateway
-      namespace: nginx-app      # point to existing gateway
+      namespace: nginx-app
+      sectionName: http              # HTTP listener only
+  hostnames:
+    - "api.ghostengineer.xyz"          # ALL subdomains
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301          # permanent redirect
+---
+# Route 2: HTTPS traffic for ghost.ghostengineer.xyz → nginx pods
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: nginx-route
+  namespace: nginx-app
+spec:
+  parentRefs:
+    - name: nginx-gateway
+      namespace: nginx-app
+      sectionName: https             # HTTPS listener only
   hostnames:
     - "api.ghostengineer.xyz"
   rules:
@@ -16,5 +37,25 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: api-app-svc
+        - name: nginx-app-svc
           port: 80
+
+# apiVersion: gateway.networking.k8s.io/v1
+# kind: HTTPRoute
+# metadata:
+#   name: api-route
+#   namespace: api-app
+# spec:
+#   parentRefs:
+#     - name: nginx-gateway
+#       namespace: nginx-app      # point to existing gateway
+#   hostnames:
+#     - "api.ghostengineer.xyz"
+#   rules:
+#     - matches:
+#         - path:
+#             type: PathPrefix
+#             value: /
+#       backendRefs:
+#         - name: api-app-svc
+#           port: 80
