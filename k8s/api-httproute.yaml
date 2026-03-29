@@ -10,7 +10,7 @@ spec:
       namespace: nginx-app
       sectionName: http              # HTTP listener only
   hostnames:
-    - "api.ghostengineer.xyz"          # ALL subdomains
+    - "*.ghostengineer.xyz"          # ALL subdomains
   rules:
     - filters:
         - type: RequestRedirect
@@ -30,7 +30,7 @@ spec:
       namespace: nginx-app
       sectionName: https             # HTTPS listener only
   hostnames:
-    - "api.ghostengineer.xyz"
+    - "*.ghostengineer.xyz"
   rules:
     - matches:
         - path:
